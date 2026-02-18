@@ -1,4 +1,4 @@
-package com.aula2.flutter_application_1
+package com.aula1.projeto_flutter_2
 
 import io.flutter.embedding.android.FlutterActivity
 
