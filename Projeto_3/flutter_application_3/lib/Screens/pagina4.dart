@@ -23,11 +23,11 @@ class Pagina4 extends StatelessWidget {
             // card visual -  cartão
             Container(
               width: double.infinity,
-              height: 200,
+              height: 300,
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 172, 17, 133),
-                borderRadius: BorderRadius.circular(25),
+                color: const Color.fromARGB(255, 105, 16, 83),
+                borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.3),
@@ -57,7 +57,7 @@ class Pagina4 extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "LAYSLLA ORETI",
+                        "LAYSLLA E. O. DE PAIVA",
                         style: TextStyle(color: Colors.white),
                       ),
                       Text("09/32", style: TextStyle(color: Colors.white)),
