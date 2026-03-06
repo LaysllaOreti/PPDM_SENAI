@@ -27,7 +27,7 @@ class TelaInicial extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 245, 245, 245),
 
-      // appbar fixa (MANTIVE SEU CÓDIGO)
+      // appbar fixa
       appBar: AppBar(
         title: const Text(
           "Banco das Pips",
