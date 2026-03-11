@@ -10,6 +10,7 @@ class Cadastro extends StatefulWidget {
 
 class _CadastroState extends State<Cadastro> {
   bool _obscurePassword = true;
+  // ignore: prefer_final_fields
   bool _obscureConfirmPassword = true;
   bool lembrar = false;
 
@@ -151,7 +152,7 @@ class _CadastroState extends State<Cadastro> {
                 const SizedBox(height: 5),
 
                 TextField(
-                  obscureText: _obscurePassword,
+                  obscureText: _obscureConfirmPassword,
                   decoration: InputDecoration(
                     hintText: "********",
                     filled: true,
