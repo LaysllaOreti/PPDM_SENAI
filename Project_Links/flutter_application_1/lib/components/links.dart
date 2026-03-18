@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Links extends StatelessWidget {
-  String url;
-  String image;
+  final String url;
+  final String image;
 
-  Links({super.key, required this.url, required this.image});
+  const Links({
+    super.key,
+    required this.url,
+    required this.image,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,21 +19,21 @@ class Links extends StatelessWidget {
       color: Colors.grey,
       child: Column(
         children: [
-          //Atribui uma ação ao componente filho
           GestureDetector(
-            child: //Imagem que será passada
-            Image.network(
-              image,
-            ),
-            onTap: () async{
-              //Para o flutter entender a sua url, transforme para url
+            child: Image.network(image),
+            onTap: () async {
               Uri converterUrl = Uri.parse(url);
-              //Se a função de lauch for true
-              if (await canLaunchUrl(converterUrl)){ 
-                //Transição para o link externo
-                await(launchUrl(converterUrl));
-              }
 
+              if (await canLaunchUrl(converterUrl)) {
+                await launchUrl(converterUrl);
+              } else {
+                // Caso não consiga abrir o link
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Não foi possível abrir o link'),
+                  ),
+                );
+              }
             },
           ),
         ],
