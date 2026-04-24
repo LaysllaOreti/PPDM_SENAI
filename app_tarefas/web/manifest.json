@@ -1,6 +1,6 @@
 {
-    "name": "flutter_tasks",
-    "short_name": "flutter_tasks",
+    "name": "app_tarefas",
+    "short_name": "app_tarefas",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
