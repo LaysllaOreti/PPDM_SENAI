@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -11,14 +10,13 @@ class TelaPut extends StatefulWidget {
 }
 
 class _TelaPutState extends State<TelaPut> {
-  List listaApi = []; // lista que armazena os dados da API
-  List controladores = []; // lista que armazena todos os controladores
+  List listaApi = [];
+  List controladores = [];
 
-  // Paleta de cores oficial
-  static const Color softBlue = Color(0xFF8CA7F4);
-  static const Color yuzuZest = Color(0xFFDBF48C);
-  static const Color pastelPurple = Color(0xFFD98CF4);
-  static const Color oatMilk = Color(0xFFFEF8F0);
+  // Paleta de Cores Rosa
+  static const Color primaryPink = Color(0xFFF48FB1); // Rosa Médio
+  static const Color accentPink = Color(0xFFFF4081);  // Rosa Vibrante
+  static const Color lightPink = Color(0xFFFCE4EC);   // Rosa Fundo
   static const Color deepGrey = Color(0XFF4A4A4A);
 
   @override
@@ -43,7 +41,7 @@ class _TelaPutState extends State<TelaPut> {
 
   void fazerPut(final id, final index) async {
     final respostaServidor = await http.patch(
-        Uri.parse("https://json-server-tasks-bbub.onrender.com/tasks$id"),
+        Uri.parse("https://json-server-tasks-bbub.onrender.com/tasks/$id"),
         headers: {"Content-type": "application/json"},
         body: jsonEncode({"title": controladores[index].text}));
 
@@ -51,7 +49,7 @@ class _TelaPutState extends State<TelaPut> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text("Título atualizado com sucesso!", textAlign: TextAlign.center),
-          backgroundColor: softBlue,
+          backgroundColor: primaryPink,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           margin: const EdgeInsets.all(20),
@@ -64,21 +62,20 @@ class _TelaPutState extends State<TelaPut> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: oatMilk,
-      // Navbar superior elegante
+      backgroundColor: lightPink,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
         title: Column(
           children: [
-            const Text("GERENCIAR", style: TextStyle(color: softBlue, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 2)),
+            const Text("GERENCIAR", style: TextStyle(color: primaryPink, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 2)),
             Text("Editar Tarefas", style: TextStyle(color: deepGrey.withOpacity(0.8), fontSize: 18, fontWeight: FontWeight.bold)),
           ],
         ),
       ),
       body: listaApi.isEmpty
-          ? const Center(child: CircularProgressIndicator(color: softBlue))
+          ? const Center(child: CircularProgressIndicator(color: primaryPink))
           : ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               itemCount: listaApi.length,
@@ -92,7 +89,7 @@ class _TelaPutState extends State<TelaPut> {
                     borderRadius: BorderRadius.circular(30),
                     boxShadow: [
                       BoxShadow(
-                        color: softBlue.withOpacity(0.1),
+                        color: primaryPink.withOpacity(0.1),
                         blurRadius: 20,
                         offset: const Offset(0, 10),
                       ),
@@ -101,13 +98,12 @@ class _TelaPutState extends State<TelaPut> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Título atual com badge
                       Row(
                         children: [
                           Container(
                             padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(color: oatMilk, borderRadius: BorderRadius.circular(10)),
-                            child: const Icon(Icons.edit_note_rounded, color: softBlue),
+                            decoration: BoxDecoration(color: lightPink, borderRadius: BorderRadius.circular(10)),
+                            child: const Icon(Icons.edit_note_rounded, color: primaryPink),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
@@ -119,8 +115,6 @@ class _TelaPutState extends State<TelaPut> {
                         ],
                       ),
                       const SizedBox(height: 15),
-                      
-                      // Campo de entrada moderno
                       Row(
                         children: [
                           Expanded(
@@ -128,9 +122,9 @@ class _TelaPutState extends State<TelaPut> {
                               height: 55,
                               padding: const EdgeInsets.symmetric(horizontal: 15),
                               decoration: BoxDecoration(
-                                color: oatMilk,
+                                color: lightPink,
                                 borderRadius: BorderRadius.circular(15),
-                                border: Border.all(color: yuzuZest.withOpacity(0.4), width: 2),
+                                border: Border.all(color: accentPink.withOpacity(0.4), width: 2),
                               ),
                               child: TextField(
                                 controller: controladores[index],
@@ -143,18 +137,16 @@ class _TelaPutState extends State<TelaPut> {
                             ),
                           ),
                           const SizedBox(width: 10),
-                          
-                          // Botão de salvar (Check)
                           GestureDetector(
                             onTap: () => fazerPut(item["id"], index),
                             child: Container(
                               height: 55,
                               width: 55,
                               decoration: BoxDecoration(
-                                color: softBlue,
+                                color: primaryPink,
                                 borderRadius: BorderRadius.circular(15),
                                 boxShadow: [
-                                  BoxShadow(color: softBlue.withOpacity(0.3), blurRadius: 10, offset: const Offset(0, 4))
+                                  BoxShadow(color: primaryPink.withOpacity(0.3), blurRadius: 10, offset: const Offset(0, 4))
                                 ],
                               ),
                               child: const Icon(Icons.check_rounded, color: Colors.white),

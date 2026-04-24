@@ -13,11 +13,9 @@ class _TelaDeleteState extends State<TelaDelete> {
   List listApi = [];
   bool isLoading = true;
 
-
-  static const Color softBlue = Color(0xFF8CA7F4);
-  static const Color yuzuZest = Color(0xFFDBF48C);
-  static const Color pastelPurple = Color(0xFFD98CF4);
-  static const Color oatMilk = Color(0xFFFEF8F0);
+  static const Color primaryPink = Color(0xFFF48FB1);
+  static const Color accentPink = Color(0xFFFF4081);
+  static const Color lightPink = Color(0xFFFCE4EC);
   static const Color deepGrey = Color(0XFF4A4A4A);
 
   @override
@@ -28,9 +26,7 @@ class _TelaDeleteState extends State<TelaDelete> {
 
   void fazerGet() async {
     try {
-      final respostaServidor = await http.get(
-        Uri.parse("https://json-server-tasks-bbub.onrender.com/tasks"),
-      );
+      final respostaServidor = await http.get(Uri.parse("https://json-server-tasks-bbub.onrender.com/tasks"));
       if (respostaServidor.statusCode == 200) {
         final dados = jsonDecode(respostaServidor.body);
         setState(() {
@@ -44,16 +40,14 @@ class _TelaDeleteState extends State<TelaDelete> {
     }
   }
 
-  
   void _confirmarExclusao(final id, String titulo) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-          backgroundColor: oatMilk,
-          title: const Text("Excluir Tarefa", 
-            style: TextStyle(fontWeight: FontWeight.bold, color: deepGrey)),
+          backgroundColor: lightPink,
+          title: const Text("Excluir Tarefa", style: TextStyle(fontWeight: FontWeight.bold, color: deepGrey)),
           content: Text("Deseja realmente apagar a tarefa:\n\"$titulo\"?"),
           actions: [
             TextButton(
@@ -62,8 +56,7 @@ class _TelaDeleteState extends State<TelaDelete> {
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: pastelPurple,
-                elevation: 0,
+                backgroundColor: accentPink,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),
               onPressed: () {
@@ -79,23 +72,17 @@ class _TelaDeleteState extends State<TelaDelete> {
   }
 
   void fazerDelete(final id) async {
-    final respostaServidor = await http.delete(
-      Uri.parse("https://json-server-tasks-bbub.onrender.com/tasks/$id"),
-    );
-
+    final respostaServidor = await http.delete(Uri.parse("https://json-server-tasks-bbub.onrender.com/tasks/$id"));
     if (respostaServidor.statusCode == 200) {
       fazerGet();
-      _mostrarMensagemCustomizada("Tarefa removida com sucesso!", softBlue);
+      _mostrarMensagemCustomizada("Tarefa removida com sucesso!", primaryPink);
     }
   }
 
-  
   void _mostrarMensagemCustomizada(String texto, Color cor) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(texto, 
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontWeight: FontWeight.w600)),
+        content: Text(texto, textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.w600)),
         backgroundColor: cor,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -108,128 +95,73 @@ class _TelaDeleteState extends State<TelaDelete> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: oatMilk,
+      backgroundColor: lightPink,
       body: Stack(
         children: [
           Positioned(
-            top: -60,
-            right: -60,
+            top: -60, right: -60,
             child: Container(
-              width: 220,
-              height: 220,
-              decoration: BoxDecoration(
-                color: softBlue.withOpacity(0.15),
-                shape: BoxShape.circle,
-              ),
+              width: 220, height: 220,
+              decoration: BoxDecoration(color: primaryPink.withOpacity(0.15), shape: BoxShape.circle),
             ),
           ),
-
           SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildHeader(),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(25, 30, 25, 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("GERENCIAR", style: TextStyle(fontSize: 14, letterSpacing: 2, color: primaryPink.withOpacity(0.8), fontWeight: FontWeight.bold)),
+                      const Text("Minhas Tarefas", style: TextStyle(fontSize: 32, fontWeight: FontWeight.w900, color: primaryPink, letterSpacing: -0.5)),
+                      const SizedBox(height: 12),
+                      Container(width: 60, height: 6, decoration: BoxDecoration(color: accentPink, borderRadius: BorderRadius.circular(10))),
+                    ],
+                  ),
+                ),
                 Expanded(
                   child: isLoading 
-                    ? const Center(child: CircularProgressIndicator(color: softBlue))
-                    : _buildList(),
+                    ? const Center(child: CircularProgressIndicator(color: primaryPink))
+                    : ListView.builder(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        itemCount: listApi.length,
+                        itemBuilder: (context, index) {
+                          final item = listApi[index];
+                          return Container(
+                            margin: const EdgeInsets.only(bottom: 16),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(24),
+                              boxShadow: [BoxShadow(color: primaryPink.withOpacity(0.08), blurRadius: 15, offset: const Offset(0, 8))],
+                            ),
+                            child: ListTile(
+                              contentPadding: const EdgeInsets.all(12),
+                              leading: Container(
+                                width: 55, height: 55,
+                                decoration: BoxDecoration(color: lightPink, borderRadius: BorderRadius.circular(18)),
+                                child: const Icon(Icons.task_alt_rounded, color: primaryPink),
+                              ),
+                              title: Text(item["title"] ?? "Sem título", style: const TextStyle(fontWeight: FontWeight.w700, color: deepGrey)),
+                              trailing: IconButton(
+                                onPressed: () => _confirmarExclusao(item["id"], item["title"] ?? ""),
+                                icon: Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(color: accentPink.withOpacity(0.1), shape: BoxShape.circle),
+                                  child: const Icon(Icons.delete_sweep_rounded, color: accentPink),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                 ),
               ],
             ),
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildHeader() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(25, 30, 25, 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("GERENCIAR",
-            style: TextStyle(
-              fontSize: 14,
-              letterSpacing: 2,
-              color: softBlue.withOpacity(0.8),
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const Text("Minhas Tarefas",
-            style: TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.w900,
-              color: softBlue,
-              letterSpacing: -0.5,
-            ),
-          ),
-          const SizedBox(height: 12),
-          Container(
-            width: 60,
-            height: 6,
-            decoration: BoxDecoration(
-              color: yuzuZest,
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildList() {
-    if (listApi.isEmpty) {
-      return const Center(child: Text("Nenhuma tarefa encontrada."));
-    }
-
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      itemCount: listApi.length,
-      itemBuilder: (context, index) {
-        final item = listApi[index];
-        return Container(
-          margin: const EdgeInsets.only(bottom: 16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(24),
-            boxShadow: [
-              BoxShadow(
-                color: softBlue.withOpacity(0.08),
-                blurRadius: 15,
-                offset: const Offset(0, 8),
-              ),
-            ],
-          ),
-          child: ListTile(
-            contentPadding: const EdgeInsets.all(12),
-            leading: Container(
-              width: 55,
-              height: 55,
-              decoration: BoxDecoration(
-                color: oatMilk,
-                borderRadius: BorderRadius.circular(18),
-              ),
-              child: const Icon(Icons.task_alt_rounded, color: softBlue),
-            ),
-            title: Text(
-              item["title"] ?? "Sem título",
-              style: const TextStyle(fontWeight: FontWeight.w700, color: deepGrey),
-            ),
-            trailing: IconButton(
-              onPressed: () => _confirmarExclusao(item["id"], item["title"] ?? ""),
-              icon: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: pastelPurple.withOpacity(0.1),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(Icons.delete_sweep_rounded, color: pastelPurple),
-              ),
-            ),
-          ),
-        );
-      },
     );
   }
 }

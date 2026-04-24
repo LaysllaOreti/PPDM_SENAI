@@ -13,19 +13,15 @@ class _TelaGetState extends State<TelaGet> {
   String resultado = "Toque no botão para ler a nuvem";
   bool isLoading = false;
 
-  // Paleta de Cores
-  static const Color softBlue = Color(0xFF8CA7F4);
-  static const Color yuzuZest = Color(0xFFDBF48C);
-  static const Color oatMilk = Color(0xFFFEF8F0);
+  static const Color primaryPink = Color(0xFFF48FB1);
+  static const Color accentPink = Color(0xFFFF4081);
+  static const Color lightPink = Color(0xFFFCE4EC);
   static const Color deepGrey = Color(0XFF4A4A4A);
 
   void fazerGet() async {
     setState(() => isLoading = true);
     try {
-      final resposta = await http.get(
-        Uri.parse("https://json-server-tasks-bbub.onrender.com/tasks"),
-      ).timeout(const Duration(seconds: 5));
-
+      final resposta = await http.get(Uri.parse("https://json-server-tasks-bbub.onrender.com/tasks")).timeout(const Duration(seconds: 5));
       if (resposta.statusCode == 200) {
         final dados = jsonDecode(resposta.body);
         setState(() {
@@ -42,21 +38,15 @@ class _TelaGetState extends State<TelaGet> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: oatMilk,
+      backgroundColor: lightPink,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
         title: Column(
           children: [
-            const Text(
-              "CONSULTA",
-              style: TextStyle(color: softBlue, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 2),
-            ),
-            Text(
-              "Sincronizar Dados",
-              style: TextStyle(color: deepGrey.withOpacity(0.8), fontSize: 18, fontWeight: FontWeight.bold),
-            ),
+            const Text("CONSULTA", style: TextStyle(color: primaryPink, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 2)),
+            Text("Sincronizar Dados", style: TextStyle(color: deepGrey.withOpacity(0.8), fontSize: 18, fontWeight: FontWeight.bold)),
           ],
         ),
       ),
@@ -65,14 +55,12 @@ class _TelaGetState extends State<TelaGet> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Icone de Status
             Container(
               padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle),
-              child: Icon(isLoading ? Icons.sync : Icons.cloud_done_rounded, size: 40, color: softBlue),
+              decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+              child: Icon(isLoading ? Icons.sync : Icons.cloud_done_rounded, size: 40, color: primaryPink),
             ),
             const SizedBox(height: 30),
-
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(35),
@@ -80,35 +68,30 @@ class _TelaGetState extends State<TelaGet> {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(30),
                 boxShadow: [
-                  BoxShadow(color: softBlue.withOpacity(0.1), blurRadius: 20, offset: const Offset(0, 10))
+                  BoxShadow(color: primaryPink.withOpacity(0.1), blurRadius: 20, offset: const Offset(0, 10))
                 ],
               ),
               child: isLoading
-                  ? const Center(child: CircularProgressIndicator(color: yuzuZest))
+                  ? const Center(child: CircularProgressIndicator(color: accentPink))
                   : Text(
                       resultado,
                       textAlign: TextAlign.center,
                       style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: deepGrey),
                     ),
             ),
-            
             const SizedBox(height: 50),
-
             SizedBox(
               width: 200, 
               height: 55,
               child: ElevatedButton(
                 onPressed: isLoading ? null : fazerGet,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: softBlue,
-                  shape: StadiumBorder(), 
+                  backgroundColor: primaryPink,
+                  shape: const StadiumBorder(), 
                   elevation: 5,
-                  shadowColor: softBlue.withOpacity(0.3),
+                  shadowColor: primaryPink.withOpacity(0.3),
                 ),
-                child: const Text(
-                  "ATUALIZAR",
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1),
-                ),
+                child: const Text("ATUALIZAR", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, letterSpacing: 1)),
               ),
             ),
           ],
